@@ -17,6 +17,8 @@ libtwolame_la_SOURCES = \
 	crc.h \
 	dab.c \
 	dab.h \
+	dvb.c \
+	dvb.h \
 	encode.c \
 	encode.h \
 	energy.c \

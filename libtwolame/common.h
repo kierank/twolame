@@ -367,6 +367,10 @@ struct twolame_options_struct {
     int tablenum;
 
     int vbrstats[15];
+
+    // DVB ancillary data
+    int do_dvb_anc;
+    TWOLAME_dvb_anc dvb_anc;
 };
 
 #endif                          // TWOLAME_COMMON_H

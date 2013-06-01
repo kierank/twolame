@@ -35,6 +35,7 @@
 #include "mem.h"
 #include "crc.h"
 #include "dab.h"
+#include "dvb.h"
 #include "psycho_n1.h"
 #include "psycho_0.h"
 #include "psycho_1.h"
@@ -277,16 +278,18 @@ int twolame_init_params(twolame_options * glopts)
     if (glopts->num_ancillary_bits < 0) {
         if (glopts->do_energy_levels) {
             glopts->num_ancillary_bits = get_required_energy_bits(glopts);
+        } else if (glopts->do_dvb_anc) {
+            glopts->num_ancillary_bits = get_required_dvb_bits(glopts);
         } else {
             glopts->num_ancillary_bits = 0;
         }
     }
 
-    /* Check that if we're doing energy levels, that there's enough space to put the information */
-    if (glopts->do_energy_levels) {
-        int required = get_required_energy_bits(glopts);
+    /* Check that if we're doing energy levels or DVB ancillary data, that there's enough space to put the information */
+    if (glopts->do_energy_levels || glopts->do_dvb_anc) {
+        int required = glopts->do_energy_levels ? get_required_energy_bits(glopts) : get_required_dvb_bits(glopts);
         if (glopts->num_ancillary_bits < required) {
-            fprintf(stderr, "Warning: Too few ancillary bits to store energy levels: %i<%i\n",
+            fprintf(stderr, "Warning: Too few ancillary bits to store energy levels or DVB ancillary data: %i<%i\n",
                     glopts->num_ancillary_bits, required);
             return -1;
         }
@@ -574,9 +577,14 @@ static int encode_frame(twolame_options * glopts, bit_stream * bs)
                          &glopts->dab_crc[i], i);
         }
     }
-    // Allocate space for the reserved ancillary bits
-    for (i = 0; i < glopts->num_ancillary_bits; i++)
-        buffer_put1bit(bs, 0);
+
+    if (glopts->do_dvb_anc)
+        write_dvb_bits(glopts, bs);
+    else {
+        // Allocate space for the reserved ancillary bits
+        for (i = 0; i < glopts->num_ancillary_bits; i++)
+            buffer_put1bit(bs, 0);
+    }
 
 
     // Calulate the number of bits in this frame

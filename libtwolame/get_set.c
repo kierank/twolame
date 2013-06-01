@@ -393,6 +393,28 @@ int twolame_get_energy_levels(twolame_options * glopts)
     return (glopts->do_energy_levels);
 }
 
+int twolame_set_dvb_ancillary(twolame_options * glopts, TWOLAME_dvb_anc *dvb_anc)
+{
+    if (dvb_anc == NULL)
+        glopts->do_dvb_anc = 0;
+    else {
+        glopts->do_dvb_anc = 1;
+        memcpy(&glopts->dvb_anc, dvb_anc, sizeof(TWOLAME_dvb_anc));
+    }
+
+    return (0);
+}
+
+
+int twolame_get_dvb_ancillary(twolame_options * glopts, TWOLAME_dvb_anc *dvb_anc)
+{
+    if (dvb_anc == NULL)
+        return (-1);
+
+    memcpy(dvb_anc, &glopts->dvb_anc, sizeof(TWOLAME_dvb_anc));
+    return (0);
+}
+
 int twolame_set_version(twolame_options * glopts, TWOLAME_MPEG_version version)
 {
     if (version != 0 && version != 1)

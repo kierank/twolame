@@ -106,6 +106,36 @@ extern "C" {
                             /**< CCIT J.17 */
     } TWOLAME_Emphasis;
 
+/** Dolby Surround Modes. */
+    typedef enum {
+        // reserved
+        TWOLAME_DSURMOD_NOT = 1,
+                            /**< Not Dolby Surround encoded */
+        TWOLAME_DSURMOD_IS  = 2,
+                            /**< Is Dolby Surround encoded */
+        // reserved
+    } TWOLAME_Dolby_Sur_Mode;
+
+/** Opaque structure for the twolame encoder options. */
+typedef struct {
+
+    int drc_on;
+    int drc_code;
+
+    TWOLAME_Dolby_Sur_Mode dolby_sur_mode;
+
+    int advanced_drc_enabled;
+    int advanced_drc_pt0;
+    int advanced_drc_pt1;
+    int advanced_drc_pt2;
+    int dialnorm_enabled;
+    int dialnorm;
+    int reprod_enabled;
+    int reprod_level;
+    int acm_enabled;
+    int acm;
+    int acm_compr;
+} TWOLAME_dvb_anc;
 
 /** Number of samples per frame of Layer 2 MPEG Audio */
 #define TWOLAME_SAMPLES_PER_FRAME		(1152)
