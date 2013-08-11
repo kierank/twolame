@@ -642,6 +642,28 @@ typedef struct {
     DLL_EXPORT int twolame_get_energy_levels(twolame_options * glopts);
 
 
+/** Enable/Disable DVB Ancillary Data
+ *
+ *  This data is specified in ETSI TS 101 154
+ *
+ *  Default: not set
+ *
+ *  \param glopts           pointer to twolame options pointer
+ *  \param dvb_anc  pointer to dvb ancillary pointer
+ *  \return                 0 if successful,
+ *                          non-zero on failure
+ */
+    DLL_EXPORT int twolame_set_dvb_ancillary(twolame_options * glopts, TWOLAME_dvb_anc *dvb_anc);
+
+
+/** Get DVB ancillary data
+ *
+ *  \param glopts   pointer to twolame options pointer
+ *  \param dvb_anc  pointer to dvb ancillary pointer
+ *  \return         -1 if no dvb ancillary data configured, else 0
+ */
+    DLL_EXPORT int twolame_get_dvb_ancillary(twolame_options * glopts, TWOLAME_dvb_anc *dvb_anc);
+
 /** Set number of Ancillary Bits at end of frame.
  *
  *	Default: 0
